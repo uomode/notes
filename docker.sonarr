@@ -45,6 +45,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /docker/appdata/radarr:/config
       - /sonarr:/sonarr
+      
   sonarr:
     container_name: sonarr
     image: linuxserver/sonarr
@@ -62,6 +63,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /docker/appdata/sonarr:/config
       - /sonarr:/sonarr
+      
   bazarr:
     container_name: bazarr
     image: linuxserver/bazarr
@@ -79,6 +81,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /docker/appdata/bazarr:/config
       - /sonarr/media:/sonarr/media
+      
   sabnzbd:
     container_name: sabnzbd
     image: linuxserver/sabnzbd
@@ -97,3 +100,4 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /docker/appdata/sabnzbd:/config
       - /sonarr/usenet:/sonarr/usenet:rw
+      

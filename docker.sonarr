@@ -101,3 +101,6 @@ services:
       - /docker/appdata/sabnzbd:/config
       - /sonarr/usenet:/sonarr/usenet:rw
       
+
+
+http://192.168.1.243:8096/library/refresh?api_key=26c823eeea474d57b3c68b7305e61e41

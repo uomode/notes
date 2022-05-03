@@ -100,7 +100,20 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /docker/appdata/sabnzbd:/config
       - /sonarr/usenet:/sonarr/usenet:rw
-      
+     
+  radarr:
+    image: linuxserver/radarr:latest
+    container_name: radarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=US/Eastern
+    volumes:
+      - /docker/appdata/radarr:/config
+      - /sonarr:/movies #optional
+    ports:
+      - 7878:7878
+    restart: unless-stopped
 
 
 http://192.168.1.243:8096/library/refresh?api_key=26c823eeea474d57b3c68b7305e61e41

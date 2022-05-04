@@ -1,30 +1,16 @@
 linuxserver/sonarr
 https://hub.docker.com/r/linuxserver/sonarr
+http://192.168.1.243:8096/library/refresh?api_key=26c823eeea474d57b3c68b7305e61e41
 
----
-version: "2.1"
-services:
-  sonarr:
-    image: lscr.io/linuxserver/sonarr
-    container_name: sonarr
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Europe/London
-    volumes:
-      - /path/to/data:/config
-      - /path/to/tvseries:/tv #optional
-      - /path/to/downloadclient-downloads:/downloads #optional
-    ports:
-      - 8989:8989
-    restart: unless-stopped
-    
----    
+
+___   
     
 https://trash-guides.info/How-to-setup-for/Docker/
 
 sudo chown -R $USER:$USER /sonarr
 sudo chmod -R a=,a+rX,u+w,g+w /sonarr
+
+___
 
 version: "3.2"
 services:
@@ -44,7 +30,7 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /docker/appdata/radarr:/config
-      - /sonarr:/sonarr
+      - /mnt/app:/app
       
   sonarr:
     container_name: sonarr
@@ -62,7 +48,7 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /docker/appdata/sonarr:/config
-      - /sonarr:/sonarr
+      - /mnt/app:/app
       
   bazarr:
     container_name: bazarr
@@ -80,7 +66,7 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /docker/appdata/bazarr:/config
-      - /sonarr/media:/sonarr/media
+      - /mnt/ssd1/app:/ssd1
       
   sabnzbd:
     container_name: sabnzbd
@@ -99,21 +85,38 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /docker/appdata/sabnzbd:/config
-      - /sonarr/usenet:/sonarr/usenet:rw
-     
-  radarr:
-    image: linuxserver/radarr:latest
-    container_name: radarr
+      - /mnt/usenet:/usenet:rw
+    
+  prowlarr:
+    image: linuxserver/prowlarr:develop
+    container_name: prowlarr
     environment:
       - PUID=1000
       - PGID=1000
       - TZ=US/Eastern
     volumes:
-      - /docker/appdata/radarr:/config
-      - /sonarr:/movies #optional
+      - /docker/appdata/prowlarr:/config
     ports:
-      - 7878:7878
+      - 9696:9696
+    restart: unless-stopped
+
+  PIA+qbittorrent:
+    image: j4ym0/pia-qbittorrent
+    container_name: pia-qb
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - REGION=us_east
+      - WEBUI_PORT=8888
+      - USER=p8209003
+      - PASSWORD=rLX5d9AvYQ
+      - DNS_SERVERS=209.222.18.222,209.222.18.218,103.196.38.38,103.196.38.39
+    volumes:
+      - /mnt/torrents/movies:/torrents/movies
+      - /mnt/torrents/tv:/torrents/tv
+    ports:
+      - 8888:8888/tcp
     restart: unless-stopped
 
 
-http://192.168.1.243:8096/library/refresh?api_key=26c823eeea474d57b3c68b7305e61e41
+

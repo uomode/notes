@@ -31,8 +31,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /docker/appdata/radarr:/config
       - /mnt/app:/app
-      
-  sonarr:
+sonarr:
     container_name: sonarr
     image: linuxserver/sonarr
     restart: unless-stopped
@@ -49,8 +48,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /docker/appdata/sonarr:/config
       - /mnt/app:/app
-      
-  bazarr:
+ bazarr:
     container_name: bazarr
     image: linuxserver/bazarr
     restart: unless-stopped
@@ -67,8 +65,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /docker/appdata/bazarr:/config
       - /mnt/ssd1/app:/app
-      
-  sabnzbd:
+ sabnzbd:
     container_name: sabnzbd
     image: linuxserver/sabnzbd
     restart: unless-stopped
@@ -86,8 +83,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /docker/appdata/sabnzbd:/config
       - /mnt/usenet:/usenet:rw
-    
-  prowlarr:
+prowlarr:
     image: linuxserver/prowlarr:develop
     container_name: prowlarr
     environment:
@@ -99,7 +95,7 @@ services:
     ports:
       - 9696:9696
     restart: unless-stopped
- transmission-openvpn:
+transmission-openvpn:
         cap_add:
             - NET_ADMIN
         volumes:

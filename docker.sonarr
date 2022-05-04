@@ -103,6 +103,8 @@ services:
   PIA+qbittorrent:
     image: j4ym0/pia-qbittorrent
     container_name: pia-qb
+    cap_add:
+      - NET_ADMIN
     environment:
       - PUID=1000
       - PGID=1000
@@ -117,6 +119,19 @@ services:
     ports:
       - 8888:8888/tcp
     restart: unless-stopped
+    
+  portainer:
+    image: portainer/portainer-ce:latest
+    container_name: portainer
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./portainer-data:/data
+    ports:
+      - 9000:9000
 
 
 

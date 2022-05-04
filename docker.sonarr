@@ -99,28 +99,27 @@ services:
     ports:
       - 9696:9696
     restart: unless-stopped
-
-  PIA+qbittorrent:
-    image: j4ym0/pia-qbittorrent
-    container_name: pia-qb
-    cap_add:
-      - NET_ADMIN
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - REGION=us_east
-      - WEBUI_PORT=8888
-      - USER=p8209003
-      - PASSWORD=rLX5d9AvYQ
-      - DNS_SERVERS=209.222.18.222,209.222.18.218,103.196.38.38,103.196.38.39
-    volumes:
-      - /mnt/torrents/movies:/torrents/movies
-      - /mnt/torrents/tv:/torrents/tv
-    ports:
-      - 8888:8888/tcp
-    restart: unless-stopped
-    
-  portainer:
+ transmission-openvpn:
+        cap_add:
+            - NET_ADMIN
+        volumes:
+            - /mnt/torrents/movies:/torrents/movies
+            - /mnt/torrents/tv:/torrents/tv
+        environment:
+            - OPENVPN_PROVIDER=PIA
+            - OPENVPN_CONFIG=dummy
+            - OPENVPN_USERNAME=p8209003
+            - OPENVPN_PASSWORD=rLX5d9AvYQ
+            - LOCAL_NETWORK=192.168.1.0/24
+        logging:
+            driver: json-file
+            options:
+                max-size: 10m
+        ports:
+            - '9091:9091'
+        image: haugene/transmission-openvpn
+        restart: unless-stopped
+portainer:
     image: portainer/portainer-ce:latest
     container_name: portainer
     restart: unless-stopped

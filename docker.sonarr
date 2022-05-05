@@ -14,9 +14,9 @@ ___
 
 version: "3.2"
 services:
-    radarr:
+  radarr:
     container_name: radarr
-    image: linuxserver/radarr
+    image: cr.hotio.dev/hotio/radarr:latest
     restart: unless-stopped
     logging:
       driver: json-file
@@ -29,11 +29,11 @@ services:
       - TZ=US/Eastern
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - /docker/appdata/radarr:/config
-      - /mnt/app:/app
-sonarr:
+      - /mnt/data/config/radarr:/config
+      - /mnt/data:/mnt/data
+  sonarr:
     container_name: sonarr
-    image: linuxserver/sonarr
+    image: cr.hotio.dev/hotio/sonarr:latest
     restart: unless-stopped
     logging:
       driver: json-file
@@ -46,11 +46,11 @@ sonarr:
       - TZ=US/Eastern
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - /docker/appdata/sonarr:/config
-      - /mnt/app:/app
- bazarr:
+      - /mnt/data/config/sonarr:/config
+      - /mnt/data:/mnt/data
+  bazarr:
     container_name: bazarr
-    image: linuxserver/bazarr
+    image: cr.hotio.dev/hotio/bazarr:latest
     restart: unless-stopped
     logging:
       driver: json-file
@@ -63,11 +63,11 @@ sonarr:
       - TZ=US/Eastern
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - /docker/appdata/bazarr:/config
-      - /mnt/ssd1/app:/app
- sabnzbd:
+      - /mnt/data/config/bazarr:/config
+      - /mnt/ssd:/mnt/ssd
+  sabnzbd:
     container_name: sabnzbd
-    image: linuxserver/sabnzbd
+    image: cr.hotio.dev/hotio/sabnzbd:latest
     restart: unless-stopped
     logging:
       driver: json-file
@@ -81,52 +81,9 @@ sonarr:
       - TZ=US/Eastern
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - /docker/appdata/sabnzbd:/config
-      - /mnt/usenet:/usenet:rw
-prowlarr:
-    image: linuxserver/prowlarr:develop
-    container_name: prowlarr
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=US/Eastern
-    volumes:
-      - /docker/appdata/prowlarr:/config
-    ports:
-      - 9696:9696
-    restart: unless-stopped
-transmission-openvpn:
-        cap_add:
-            - NET_ADMIN
-        volumes:
-            - /mnt/torrents/movies:/torrents/movies
-            - /mnt/torrents/tv:/torrents/tv
-        environment:
-            - OPENVPN_PROVIDER=PIA
-            - OPENVPN_CONFIG=dummy
-            - OPENVPN_USERNAME=p8209003
-            - OPENVPN_PASSWORD=rLX5d9AvYQ
-            - LOCAL_NETWORK=192.168.1.0/24
-        logging:
-            driver: json-file
-            options:
-                max-size: 10m
-        ports:
-            - '9091:9091'
-        image: haugene/transmission-openvpn
-        restart: unless-stopped
-portainer:
-    image: portainer/portainer-ce:latest
-    container_name: portainer
-    restart: unless-stopped
-    security_opt:
-      - no-new-privileges:true
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./portainer-data:/data
-    ports:
-      - 9000:9000
+      - /mnt/data/config/sabnzbd:/config
+      - /mnt/data/usenet:/mnt/data/usenet:rw
+
 
 
 

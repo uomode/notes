@@ -95,7 +95,18 @@ services:
     ports:
       - 9696:9696
     restart: unless-stopped
-
+  portainer:
+    image: portainer/portainer-ce:latest
+    container_name: portainer
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /mnt/data/config/portainer-data:/data
+    ports:
+      - 9000:9000
 
 
 

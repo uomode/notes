@@ -83,6 +83,18 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /mnt/data/config/sabnzbd:/config
       - /mnt/data/usenet:/mnt/data/usenet:rw
+  prowlarr:
+    image: linuxserver/prowlarr
+    container_name: prowlarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=US/Eastern
+    volumes:
+      - /mnt/data/config/prowlarr:/config
+    ports:
+      - 9696:9696
+    restart: unless-stopped
 
 
 

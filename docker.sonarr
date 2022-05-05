@@ -9,3 +9,99 @@ https://trash-guides.info/How-to-setup-for/Docker/
 
 sudo chown -R $USER:$USER /home/docker
 sudo chmod -R a=,a+rX,u+w,g+w  /home/docker
+
+version: "3.2"
+services:
+  radarr:
+    container_name: radarr
+    image: cr.hotio.dev/hotio/radarr:latest
+    restart: unless-stopped
+    logging:
+      driver: json-file
+    network_mode: bridge
+    ports:
+      - 7878:7878
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=US/Eastern
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /mnt/data/config/radarr:/config
+      - /mnt/data:/mnt/data
+  sonarr:
+    container_name: sonarr
+    image: cr.hotio.dev/hotio/sonarr:latest
+    restart: unless-stopped
+    logging:
+      driver: json-file
+    network_mode: bridge
+    ports:
+      - 8989:8989
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=US/Eastern
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /mnt/data/config/sonarr:/config
+      - /mnt/data:/mnt/data
+  bazarr:
+    container_name: bazarr
+    image: cr.hotio.dev/hotio/bazarr:latest
+    restart: unless-stopped
+    logging:
+      driver: json-file
+    network_mode: bridge
+    ports:
+      - 6767:6767
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=US/Eastern
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /mnt/data/config/bazarr:/config
+      - /mnt/ssd:/mnt/ssd
+  sabnzbd:
+    container_name: sabnzbd
+    image: cr.hotio.dev/hotio/sabnzbd:latest
+    restart: unless-stopped
+    logging:
+      driver: json-file
+    network_mode: bridge
+    ports:
+      - 8080:8080
+      - 9090:9090
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=US/Eastern
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /mnt/data/config/sabnzbd:/config
+      - /mnt/data/usenet:/mnt/data/usenet:rw
+  prowlarr:
+    image: linuxserver/prowlarr
+    container_name: prowlarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=US/Eastern
+    volumes:
+      - /mnt/data/config/prowlarr:/config
+    ports:
+      - 9696:9696
+    restart: unless-stopped
+  portainer:
+    image: portainer/portainer-ce:latest
+    container_name: portainer
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /mnt/data/config/portainer-data:/data
+    ports:
+      - 9000:9000
